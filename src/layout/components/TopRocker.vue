@@ -4,10 +4,10 @@
         <nav class="navbar navbar-expand">
             <div class="topbar-logo-header">
                 <div class="">
-                    <img src="../../assets/images/logo-icon.png" class="logo-icon" alt="logo icon">
+                    <img style="width: 60px;" src="https://i.pinimg.com/474x/90/32/9e/90329ee78a7fbe47bcba6d737ac34fc5.jpg" class="logo-icon" alt="logo icon">
                 </div>
                 <div class="">
-                    <h4 class="logo-text">Rocker</h4>
+                    <h4 class="logo-text">CLUB BIDA</h4>
                 </div>
             </div>
             <div class="mobile-toggle-menu"><i class='bx bx-menu'></i></div>
@@ -115,7 +115,7 @@
             <div class="user-box dropdown">
                 <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret"
                     href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="../../assets/images/avatars/avatar-2.png" class="user-img" alt="user avatar">
+                    <img src="https://bizweb.dktcdn.net/100/418/981/products/z4844324734873-a402995347fddf76e21b8dc763f4a6e1-1699018261248.jpg?v=1699018265900" class="user-img" alt="user avatar">
                     <div class="user-info ps-3">
                         <p class="user-name mb-0">Huynh Hieu</p>
                         <p class="designattion mb-0">Web Designer</p>

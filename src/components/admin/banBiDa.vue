@@ -26,20 +26,15 @@
                                         <input type="text" class="form-control">
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td><label class="mx-4 form">Nhập số phòng :</label></td>
-                                    <td>
-                                        <input type="text" class="form-control">
-                                    </td>
-                                </tr>
+
                                 <tr>
                                     <td>
                                         <label class="mx-4">Nhập trạng thái :</label>
                                     </td>
                                     <td>
                                         <select class="form-select">
-                                            <option value="1">Mở bàn</option>
-                                            <option value="2">Đóng bàn</option>
+                                            <option value="1">Đang sử dụng </option>
+                                            <option value="2">Bàn Trống</option>
                                         </select>
                                     </td>
                                 </tr>
@@ -113,8 +108,7 @@
                                         <input type="text" class="form-control">
                                         <label>Loại bàn</label>
                                         <input type="text" class="form-control">
-                                        <label>Phòng</label>
-                                        <input type="text" class="form-control">
+
                                         <label>Tình trạng</label>
                                         <select class="form-select">
                                             <option value="1">Mở bàn</option>
