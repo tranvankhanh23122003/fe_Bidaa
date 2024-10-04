@@ -14,34 +14,37 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        <label class="mx-4 form">Nhập số phòng :</label>
+                                        <label class="mx-4 form text-nowrap">Nhập số phòng:</label>
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><label class="mx-4 form">Nhập loại phòng :</label></td>
-                                    <td>
-                                        <input type="text" class="form-control">
+                                        <input v-model="create_phong.number" type="text" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td><label class="mx-4 form text-nowrap">Nhập loại phòng:</label></td>
                                     <td>
-                                        <label class="mx-4">Nhập trạng thái :</label>
-                                    </td>
-                                    <td>
-                                        <select class="form-select">
-                                            <option value="1">Mở phòng</option>
-                                            <option value="2">Đóng phòng</option>
+                                        <select v-model="create_phong.type"  class="form-select" aria-label="Chọn Loại phòng">
+                                            <option selected value="1">Cùi</option>
+                                            <option value="0">Vip</option>
                                         </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="mx-4 text-nowrap">Nhập trạng thái:</label>
+                                    </td>
+                                    <td>
+                                      <select v-model="create_phong.status" class="form-select" aria-label="Chọn trạng thái">
+                                        <option selected value="1">Mở phòng</option>
+                                        <option value="0">Đóng phòng</option>
+                                      </select>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="card-footer text-end">
-                        <button class='btn btn-primary'>Thêm</button>
+                        <button @click="themMoiPhong" class='btn btn-primary'>Thêm</button>
                     </div>
                 </div>
 
@@ -69,15 +72,16 @@
                                         Chỉnh sửa
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr v-for="(value, index) in list_phong">
                                     <td class="text-center align-middle">
-                                        Số phòng
+                                        {{ value.number }}
                                     </td>
                                     <td class="text-center align-middle">
                                         Loại phòng
                                     </td>
-                                    <td class="text-center align-middle">
-                                        Tình trạng
+                                    <td class="align-middle text-center">
+                                        <button v-on:click="changeTrangThai(value)" v-if="value.status == '1'" class="btn btn-success w-100">Mở phòng</button>
+                                        <button v-on:click="changeTrangThai(value)" v-else class="btn btn-danger w-100">Đóng phòng</button>
                                     </td>
                                     <td class="text-center align-middle">
                                         <button class='btn btn-primary mx-2'  data-bs-toggle="modal"
@@ -163,10 +167,91 @@
     </div>
 </template>
 <script>
+import axios from '../../assets/core/BaseRequest'
+
 export default {
-    
+    data() {
+        return {
+            list_phong: [],
+            create_phong: {},
+            del_phong: {},
+            is_them_moi: 0,
+            edit_phong: {},
+        }
+    },
+    mounted() {
+        this.layDataPhong();
+    },
+    methods: {
+
+        layDataPhong() {
+            axios
+                .get("phong")
+                .then((res) => {
+                    this.list_phong = res.data.data;
+                })
+        },
+        themMoiPhong() {
+            axios
+                .post("phong", this.create_phong)
+                .then((res) => {
+                    if (res.data.status) {
+                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
+                        this.$toast.success(thong_bao);
+                        this.create_phong = {},
+                            this.layDataPhong();
+                    } else {
+                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
+                        this.$toast.error(thong_bao);
+                    }
+                })
+        },
+        capnhatPhong() {
+            axios
+                .put("phong/", this.edit_phong)
+                .then((res) => {
+                    if (res.data.status) {
+                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
+                        this.$toast.success(thong_bao);
+                        this.layDataPhong();
+                    } else {
+                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
+                        this.$toast.error(thong_bao);
+                    }
+                })
+        },
+        xoaPhong() {
+            axios
+                .delete("", this.del_phong)
+                .then((res) => {
+                    if (res.data.status) {
+                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
+                        this.$toast.success(thong_bao);
+                        this.layDataPhong();
+                    } else {
+                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
+                        this.$toast.error(thong_bao);
+                    }
+                })
+        },
+
+        changeTrangThai(value) {
+            axios
+                .put("phong/doi-trang-thai", { ...value, status: !value.status })
+                .then((res) => {
+                    if (res.data.status) {
+                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
+                        this.$toast.success(thong_bao);
+                        this.layDataPhong();
+                    } else {
+                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
+                        this.$toast.error(thong_bao);
+                    }
+                })
+        },
+    },
 }
 </script>
 <style lang="">
-    
+
 </style>

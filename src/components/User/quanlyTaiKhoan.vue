@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     tinhThoiGianConLai() {
-      const thoiDiemKetThuc = new Date('2024-09-25T23:59:59'); 
+      const thoiDiemKetThuc = new Date('2024-10-25T23:59:59'); 
       const thoiGianHienTai = new Date();
       const khoangThoiGian = thoiDiemKetThuc - thoiGianHienTai;
 

@@ -105,7 +105,7 @@
                 </li>
                 <li class="nav-item">
                     <router-link class="nav-link" to="/admin/quan-ly-kho">
-                        <div class="parent-icon"><i class="fa-solid fa-phone"></i></div>
+                        <div class="parent-icon"><i class="fa-solid fa-warehouse"></i></div>
                         <div class="menu-title">Quản lý kho</div>
                     </router-link>
                 </li>

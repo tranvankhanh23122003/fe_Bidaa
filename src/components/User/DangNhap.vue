@@ -10,8 +10,8 @@
                         <div class="text-center">
                             <h3 class="">Đăng Nhập</h3>
                             <p>Bạn chưa có tài khoản?
-                                <router-link to="/admin/dang-ky">
-                                    <a href="/admin/dang-ky">Đăng Ký</a>
+                                <router-link to="/user/dang-ky">
+                                    <a href="/user/dang-ky">Đăng Ký</a>
                                 </router-link>
                             </p>
                         </div>
@@ -22,13 +22,13 @@
                             <form class="row g-3">
                                 <div class="col-12">
                                     <label class="form-label">Số điện thoại</label>
-                                    <input type="text" v-model="admin.phoneNumber" class="form-control"
+                                    <input type="text" v-model="user.phoneNumber" class="form-control"
                                         placeholder="Nhập vào số điện thoại">
                                 </div>
                                 <div class="col-12">
                                     <label class="form-label">Mật Khẩu</label>
                                     <div class="input-group">
-                                        <input v-model="admin.password" type="password" class="form-control"
+                                        <input v-model="user.password" type="password" class="form-control"
                                             placeholder="Nhập vào Mật Khẩu">
                                     </div>
                                 </div>
@@ -54,21 +54,23 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            admin: {} 
+            user: {} 
         }
     },
 
     methods: {
         actionDangNhap() {
             axios
-                .post('http://127.0.0.1:8000/api/dang-nhap', this.admin) 
+                .post('http://127.0.0.1:8000/api/dang-nhap', this.user) 
                 .then((res) => {
                     if (res.data.status) {
                         var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
                         this.$toast.success(thong_bao);
-                        this.admin = {}; 
-                        localStorage.setItem('token_admin', res.data.token);
-                        localStorage.setItem('ten_admin', res.data.user.name); 
+                        this.user = {}; 
+                        localStorage.setItem('token_user', res.data.token);
+                        localStorage.setItem('ten_user', res.data.user.name);
+                        this.$router.push('/user/dat-ban-truc-tuyen');
+
                     } else {
                         var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
                         this.$toast.error(thong_bao);
