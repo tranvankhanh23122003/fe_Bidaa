@@ -1,130 +1,230 @@
 <template>
-    <div class="payment-container">
-      <h2>Thanh Toán</h2>
-  
-      <div class="khach_hang-info">
-        <h3>Thông tin khách hàng</h3>
-        <label>Tên khách hàng:</label>
-        <input v-model="khach_hang.name" type="text" placeholder="Nhập tên khách hàng">
-  
-        <label>Số điện thoại:</label>
-        <input v-model="khach_hang.sdt" type="text" placeholder="Nhập số điện thoại">
+  <div class="container">
+    <h1 class="text-center">Quản lý Hóa Đơn</h1>
+
+    <div class="search-form my-4">
+      <input
+        type="text"
+        v-model="searchQuery"
+        class="form-control"
+        placeholder="Tìm kiếm hóa đơn theo tên hoặc số điện thoại..."
+      />
+      <button class="btn btn-primary mt-2" @click="timKiemHoaDon">Tìm kiếm</button>
+    </div>
+
+    <div class="row">
+      <div class="col-5">
+        <div class="bill-form my-4">
+          <h2 class="text-center">{{ editing ? 'Cập nhật hóa đơn' : 'Tạo hóa đơn mới' }}</h2>
+
+          <input
+            type="text"
+            v-model="billForm.customerName"
+            class="form-control"
+            placeholder="Nhập tên khách hàng"
+            required
+          />
+          <input
+            type="text"
+            v-model="billForm.customerPhone"
+            class="form-control mt-2"
+            placeholder="Số điện thoại"
+            required
+          />
+          <input
+            type="number"
+            v-model="billForm.totalAmount"
+            class="form-control mt-2"
+            placeholder="Tổng tiền (VND)"
+            required
+          />
+
+          <button class="btn btn-success mt-3" @click="editing ? capNhatHoaDon() : taoHoaDon()">
+            {{ editing ? 'Cập nhật' : 'Tạo hóa đơn' }}
+          </button>
+          <button v-if="editing" class="btn btn-secondary mt-3 ml-2" @click="huyChinhSua">
+            Hủy
+          </button>
+        </div>
       </div>
-  
-      <div class="dich_vu-list">
-        <h3>Dịch vụ đã sử dụng</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Dịch vụ</th>
-              <th>Giá</th>
-              <th>Số lượng</th>
-              <th>Tổng</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(dich_vu, index) in dich_vus" :key="index">
-              <td>{{ dich_vu.name }}</td>
-              <td>{{ dich_vu.gia }} VND</td>
-              <td>{{ dich_vu.so_luong }}</td>
-              <td>{{ dich_vu.gia * dich_vu.so_luong }} VND</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-  
-      <div class="total-payment">
-        <h3>Tổng cộng: {{ tongSoTien }} VND</h3>
-        <button v-on:click="hoanTatThanhToan">Hoàn tất thanh toán</button>
+
+      <div class="col-7">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="text-center">Danh sách Hóa Đơn</h2>
+            <ul class="list-group">
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center"
+                v-for="bill in bills"
+                :key="bill.id"
+              >
+                <div>
+                  <p><b>Khách hàng:</b> {{ bill.fullName }}</p>
+                  <p><b>Số điện thoại:</b> {{ bill.phoneNumber }}</p>
+                  <p><b>Tổng tiền:</b> {{ bill.amount }} VND</p>
+                </div>
+                <div>
+                  <button class="btn btn-warning mx-2" @click="batDauChinhSua(bill)">
+                    Sửa
+                  </button>
+                  <button class="btn btn-danger" @click="xoaHoaDon(bill.id)">
+                    Xóa
+                  </button>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        khach_hang: {
-          name: '',
-          sdt: '',
-        },
-        dich_vus: [
-          { name: 'Giờ chơi bida', gia: 50000, so_luong: 2 },
-          { name: 'Nước uống', gia: 20000, so_luong: 3 },
-        ],
-      };
+  </div>
+</template>
+
+<script>
+import axios from '../../assets/core/BaseRequest'
+
+export default {
+  data() {
+    return {
+      bills: [], 
+      billForm: { 
+        customerName: '',
+        customerPhone: '',
+        totalAmount: ''
+      }, 
+      searchQuery: "",
+      editing: false, 
+      editingId: null, 
+    };
+  },
+  mounted() {
+    this.layHoaDon(); 
+  },
+  methods: {
+    layHoaDon() {
+      axios.get("hoa-don")
+        .then((response) => {
+          console.log(response.data.data);
+          
+          this.bills = response.data.data;
+        })
+        .catch((error) => {
+          alert('Có lỗi xảy ra khi lấy danh sách hóa đơn: ' + error.response.data.message);
+        });
     },
-    computed: {
-      tongSoTien() {
-        return this.dich_vus.reduce((total, dich_vu) => {
-          return total + (dich_vu.gia * dich_vu.so_luong);
-        }, 0);
-      },
+
+    taoHoaDon() {
+      if (!this.billForm.customerName || !this.billForm.customerPhone || !this.billForm.totalAmount) {
+        alert("Vui lòng điền đầy đủ thông tin.");
+        return;
+      }
+
+      axios.post("hoa-don", this.billForm)
+        .then((response) => {
+          if (response.data.status === 201) {
+            alert(response.data.message);
+            this.resetForm();
+            this.layHoaDon(); 
+          }
+        })
+        .catch((error) => {
+          alert('Có lỗi xảy ra khi tạo hóa đơn: ' + error.response.data.message);
+        });
     },
-    methods: {
-      hoanTatThanhToan() {
-        alert(`Thanh toán thành công! Tổng số tiền: ${this.tongSoTien} VND`);
-      },
+
+    batDauChinhSua(bill) {
+      this.billForm = { ...bill }; 
+      this.editing = true;
+      this.editingId = bill.id;
     },
-  };
-  </script>
-  
-  <style scoped>
-  .payment-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
+
+    capNhatHoaDon() {
+      axios.put(`hoa-don`, { ...this.billForm, id: this.editingId })
+        .then((response) => {
+          if (response.data.status === 200) {
+            alert(response.data.message);
+            this.resetForm();
+            this.editing = false;
+            this.layHoaDon(); 
+          }
+        })
+        .catch((error) => {
+          alert('Có lỗi xảy ra khi cập nhật hóa đơn: ' + error.response.data.message);
+        });
+    },
+
+    xoaHoaDon(id) {
+      if (confirm('Bạn có chắc chắn muốn xóa hóa đơn này?')) {
+        axios.delete(`hoa-don/${id}`)
+          .then((response) => {
+            if (response.data.status === 200) {
+              alert(response.data.message);
+              this.layHoaDon(); 
+            }
+          })
+          .catch((error) => {
+            alert('Có lỗi xảy ra khi xóa hóa đơn: ' + error.response.data.message);
+          });
+      }
+    },
+
+    timKiemHoaDon() {
+      axios.post("hoa-don/tim-hoaDon", { keyword: this.searchQuery })
+        .then((response) => {
+          this.bills = response.data.data;
+        })
+        .catch((error) => {
+          alert('Có lỗi xảy ra khi tìm kiếm hóa đơn: ' + error.response.data.message);
+        });
+    },
+
+    huyChinhSua() {
+      this.resetForm(); 
+      this.editing = false;
+    },
+
+    resetForm() {
+      this.billForm = { customerName: '', customerPhone: '', totalAmount: '' };
+    }
   }
-  
-  h2, h3 {
-    text-align: center;
-    color: #333;
-  }
-  
-  .khach_hang-info, .dich_vu-list, .total-payment {
-    margin-bottom: 20px;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  input {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }s
-  
-  table th, table td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  button {
-    width: 100%;
-    padding: 10px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #218838;
-  }
-  </style>
-  
+};
+</script>
+
+<style scoped>
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: #007bff;
+}
+
+.bill-form,
+.search-form {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.bill-form input {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.list-group-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+button {
+  padding: 8px 16px;
+  margin-left: 5px;
+}
+</style>

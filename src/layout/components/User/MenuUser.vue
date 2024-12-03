@@ -46,12 +46,7 @@
                                 <div class="menu-title">Đặt bàn online</div>
                             </router-link>
                         </li>
-                        <li class="nav-item">
-                            <router-link class="nav-link mt-2" to="/user/danh-gia">
-                                <div class="parent-icon"><i class="fa-solid fa-user"></i></div>
-                                <div class="menu-title">Đánh Giá</div>
-                            </router-link>
-                        </li>
+                   
                          
                         <li class="nav-item">
                             <router-link class="nav-link mt-2" to="/user/quan-ly-tai-khoan">
@@ -62,19 +57,25 @@
                 
                 <li class="nav-item">
                     <router-link class="nav-link mt-2" to="/user/theo-doi-thoi-gian-choi">
-                        <div class="parent-icon"><i class="fa-solid fa-phone"></i></div>
+                        <div class="parent-icon"><i class="fa-solid fa-clock"></i></div>
                         <div class="menu-title">Theo dõi thời gian chơi</div>
                     </router-link>
                 </li>
                 <li class="nav-item">
                     <router-link class="nav-link mt-2" to="/user/ban-nuoc-uong">
-                        <div class="parent-icon"><i class="fa-solid fa-phone"></i></div>
+                        <div class="parent-icon"><i class="fa-solid fa-bowl-food"></i></div>
                         <div class="menu-title">Thực đơn</div>
                     </router-link>
                 </li>
                 <li class="nav-item">
+                            <router-link class="nav-link mt-2" to="/user/danh-gia">
+                                <div class="parent-icon"><i class="fa-solid fa-comment"></i></div>
+                                <div class="menu-title">Đánh Giá</div>
+                            </router-link>
+                        </li>
+                <li class="nav-item">
                     <router-link class="nav-link mt-2" to="/user/he-thong-tich-diem">
-                        <div class="parent-icon"><i class="fa-solid fa-phone"></i></div>
+                        <div class="parent-icon"><i class="fa-solid fa-gift"></i></div>
                         <div class="menu-title">Đổi Thưởng</div>
                     </router-link>
                 </li>
@@ -82,6 +83,12 @@
                     <router-link class="nav-link mt-2" to="/user/tro-chuyen">
                         <div class="parent-icon"><i class="fa-solid fa-phone"></i></div>
                         <div class="menu-title">Trò chuyện</div>
+                    </router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link class="nav-link mt-2" to="/user/thanh-toan">
+                        <div class="parent-icon"><i class="fa-brands fa-paypal"></i></div>
+                        <div class="menu-title">Thanh Toán</div>
                     </router-link>
                 </li>
             </ul>

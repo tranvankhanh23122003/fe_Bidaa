@@ -1,6 +1,6 @@
 <template>
 <footer class="page-footer">
-    <p class="mb-0">Copyright © 2021. All right reserved.</p>
+    <p class="mb-0">WEBSITE QUẢN LÝ CLUB BI-A NHÓM 2 </p>
 </footer>
 </template>
 <script>

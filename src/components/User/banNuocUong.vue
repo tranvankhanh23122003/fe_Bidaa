@@ -76,7 +76,7 @@
           { ten: 'Phở', mota: 'Món phở ngon nhất thành phố', gia: 50000, hinh: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4C1rbES8uNBNxPvJCQOWemsv9vlU6xJ9WbQ&s' },
           { ten: 'Bánh mì', mota: 'Bánh mì kẹp thịt, rau củ', gia: 30000, hinh: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFjLZcRo9cohDLSjAe6zuslM5ipk5CDQqgWA&s' },
           { ten: 'Gỏi cuốn', mota: 'Gỏi cuốn tôm thịt tươi ngon', gia: 40000, hinh: 'https://helio.vn/media/uploads/2023/08/10/goi-cuon-da-nang-04.jpg' },
-          { ten: 'Cức', mota: 'Cức tươi mới', gia: 40000, hinh: 'https://helio.vn/media/uploads/2023/08/10/goi-cuon-da-nang-04.png' },
+         
 
         ],
         danhSachNuocUong: [

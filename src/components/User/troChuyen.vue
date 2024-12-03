@@ -37,7 +37,7 @@
         messages: [
           { user: 'Người chơi 1', text: 'Chào mọi người! 👋' },
           { user: 'Người chơi 2', text: 'Yo! Có muốn chơi chung không? 😅' },
-          { user: 'Người chơi 3', text: 'Solo đêiiiiii !!!!!! ⚔️' },
+          { user: 'Người chơi 3', text: 'tớ đây ⚔️' },
 
         ],
         newMessage: '',

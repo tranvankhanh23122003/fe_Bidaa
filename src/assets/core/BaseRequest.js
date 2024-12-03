@@ -4,7 +4,8 @@ const apiUrl = "http://127.0.0.1:8000/api/";
 
 export default {
   getHeader() {
-    let token = window.localStorage.getItem("token_user");
+    let token = window.localStorage.getItem("token");
+    
     if (token == null) {
       return {};
     }
@@ -22,7 +23,7 @@ export default {
   put(url, data) {
     return axios.put(apiUrl + url, data, { headers: this.getHeader() });
   },
-  delete(url, data) {
-    return axios.delete(apiUrl + url, data, { headers: this.getHeader() });
+  delete(url) {
+    return axios.delete(apiUrl + url, { headers: this.getHeader() });
   },
 };

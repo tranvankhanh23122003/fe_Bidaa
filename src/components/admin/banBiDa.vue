@@ -17,13 +17,23 @@
                                         <label class="mx-4 form">Nhập số bàn :</label>
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control">
+                                        <input v-model="create_ban.number" type="text" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><label class="mx-4 form">Nhập loại bàn :</label></td>
                                     <td>
-                                        <input type="text" class="form-control">
+                                        <input v-model="create_ban.roomID" type="text" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label class="mx-4 form">Nhập loại phòng :</label></td>
+                                    <td>
+                                        <select v-model="create_ban.type" class="form-select"
+                                            aria-label="Chọn Loại phòng">
+                                            <option selected value="1">Thường</option>
+                                            <option value="0">Vip</option>
+                                        </select>
                                     </td>
                                 </tr>
 
@@ -32,9 +42,10 @@
                                         <label class="mx-4">Nhập trạng thái :</label>
                                     </td>
                                     <td>
-                                        <select class="form-select">
-                                            <option value="1">Đang sử dụng </option>
-                                            <option value="2">Bàn Trống</option>
+                                        <select v-model="create_ban.status" class="form-select"
+                                            aria-label="Chọn trạng thái">
+                                            <option selected value="1">Đang sử dụng</option>
+                                            <option value="0">Bàn Trống</option>
                                         </select>
                                     </td>
                                 </tr>
@@ -42,7 +53,7 @@
                         </table>
                     </div>
                     <div class="card-footer text-end">
-                        <button class='btn btn-primary'>Thêm</button>
+                        <button @click="themMoiban" class='btn btn-primary'>Thêm</button>
                     </div>
                 </div>
 
@@ -55,44 +66,53 @@
                     </div>
                     <div class="card-body">
                         <table class="table table-bordered">
+                            
                             <tbody>
                                 <tr>
                                     <td class="text-center align-middle">
-                                        Số bàn
+<b>Số bàn</b>                                    </td>
+                                    <td class="text-center align-middle">
+                                        <b>Loại bàn</b>
                                     </td>
                                     <td class="text-center align-middle">
-                                        Loại bàn
+                                       <b>Loại Phòng</b>
                                     </td>
                                     <td class="text-center align-middle">
-                                        Phòng
+                                       <b>tình trạng </b>
                                     </td>
                                     <td class="text-center align-middle">
-                                        Tình trạng
-                                    </td>
-                                    <td class="text-center align-middle">
-                                        Chỉnh sửa
+                                        <b> chỉnh sửa</b>
+
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr v-for="(value, index) in list_ban" :key="index">
                                     <td class="text-center align-middle">
-                                        Số bàn
+                                        {{ value.number }}
                                     </td>
                                     <td class="text-center align-middle">
-                                        Loại bàn
+                                        {{ value.type == '1' ? 'thường' : 'Vip' }}
                                     </td>
                                     <td class="text-center align-middle">
-                                        Phòng
+                                        {{ value.roomID }}
                                     </td>
                                     <td class="text-center align-middle">
-                                        Tình trạng
+                                        <button v-on:click="changeTrangThai(value)" v-if="value.status == '0'"
+                                            class="btn btn-success w-100">
+                                            đang sử dụng
+                                        </button>
+                                        <button v-on:click="changeTrangThai(value)" v-else class="btn btn-danger w-100">
+                                            bàn trống
+                                        </button>
                                     </td>
                                     <td class="text-center align-middle">
-                                        <button class='btn btn-primary mx-2' data-bs-toggle="modal"
+                                        <button @click="edit_ban = Object.assign({}, value)"
+                                            class='btn btn-primary mx-2' data-bs-toggle="modal"
                                             data-bs-target="#suaModal">Sửa</button>
-                                        <button class='btn btn-danger' data-bs-toggle="modal"
+                                        <button @click="del_ban = value" class='btn btn-danger' data-bs-toggle="modal"
                                             data-bs-target="#xoaModal">Xóa</button>
                                     </td>
                                 </tr>
+
                             </tbody>
                         </table>
                         <div class="modal fade" id="suaModal" tabindex="-1">
@@ -105,20 +125,27 @@
                                     </div>
                                     <div class="modal-body">
                                         <label>Số bàn</label>
-                                        <input type="text" class="form-control">
-                                        <label>Loại bàn</label>
-                                        <input type="text" class="form-control">
+                                        <input v-model="edit_ban.number" type="text" class="form-control">
+                                        <label>Số phòng</label>
+                                        <input v-model="edit_ban.roomID" type="text" class="form-control">
+
+                                        <label>Loại phòng</label>
+                                        <select v-model="edit_ban.type" class="form-select"
+                                            aria-label="Chọn Loại phòng">
+                                            <option value="1">Cùi</option>
+                                            <option value="0">Vip</option>
+                                        </select>
 
                                         <label>Tình trạng</label>
-                                        <select class="form-select">
-                                            <option value="1">Mở bàn</option>
-                                            <option value="2">Đóng bàn</option>
+                                        <select v-model="edit_ban.status" class="form-select">
+                                            <option value="1">Đang sử dụng</option>
+                                            <option value="0">Bàn trống</option>
                                         </select>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">Đóng</button>
-                                        <button type="button" class="btn btn-primary">Xác nhận</button>
+                                        <button  @click="capnhatban" type="button" class="btn btn-primary">Xác nhận</button>
                                     </div>
                                 </div>
                             </div>
@@ -141,7 +168,7 @@
                                                 <div class="ms-3">
                                                     <h6 class="mb-0 text-dark">Warning</h6>
                                                     <div class="text-dark">
-                                                        <p>Bạn có muốn xóa danh mục <b></b> này không?
+                                                        <p>Bạn có muốn xóa danh mục <b>{{ del_ban.number }}</b> này không?
                                                         </p>
                                                         <p>
                                                             <b>Lưu ý:</b> Điều này không thể hoàn tác!
@@ -154,7 +181,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">Thoát</button>
-                                        <button type="button" class="btn btn-danger"
+                                        <button @click="xoaban" type="button" class="btn btn-danger"
                                             data-bs-dismiss="modal">Xóa</button>
                                     </div>
                                 </div>
@@ -167,8 +194,97 @@
     </div>
 </template>
 <script>
+import axios from '../../assets/core/BaseRequest'
 export default {
-  
+    data() {
+        return {
+            list_ban: [],
+            create_ban: {},
+            del_ban: {},
+            is_them_moi: 0,
+            edit_ban: {},
+        }
+    },
+    mounted() {
+        this.layDataban();
+    },
+    methods: {
+        layDataban() {
+            axios
+                .get("ban-bida")
+                .then((res) => {
+                    console.log(res.data.data);
+                    this.list_ban = res.data.data;
+                })
+        },
+
+        themMoiban() {
+            axios
+                .post("ban-bida", this.create_ban)
+                .then((res) => {
+                    if (res.data.status) {
+                        this.$toast.success('Phòng đã được thêm thành công');
+                        this.create_ban = {};
+                        this.layDataban();
+                    } else {
+                        this.$toast.error('Có lỗi xảy ra khi thêm phòng');
+                    }
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$toast.error('Bạn không có quyền thực hiện hành động này.');
+                    }
+                });
+        },
+
+        capnhatban() {
+            axios
+                .put("ban-bida/", this.edit_ban)
+                .then((res) => {
+                    if (res.data.status) {
+                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
+                        this.$toast.success(thong_bao);
+                        this.layDataban();
+                    } else {
+                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
+                        this.$toast.error(thong_bao);
+                        this.layDataban();
+
+                    }
+                }).finally(() => {
+                    $('.close-model').click()
+                })
+        },
+        xoaban() {
+            axios
+                .delete("ban-bida/" + this.del_ban.id)
+                .then((res) => {
+                    if (res.data.status) {
+                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
+                        this.$toast.success(thong_bao);
+                        this.layDataban();
+                    } else {
+                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
+                        this.$toast.error(thong_bao);
+                    }
+                })
+        },
+
+        changeTrangThai(value) {
+            axios
+                .put("ban-bida/doi-trang-thai", { ...value, status: !value.status })
+                .then((res) => {
+                    if (res.data.status) {
+                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
+                        this.$toast.success(thong_bao);
+                        this.layDataban();
+                    } else {
+                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
+                        this.$toast.error(thong_bao);
+                    }
+                })
+        },
+    },
 }
 </script>
 <style></style>

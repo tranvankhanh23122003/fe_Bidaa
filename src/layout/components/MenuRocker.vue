@@ -111,7 +111,7 @@
                 </li>
                 <li class="nav-item">
                     <router-link class="nav-link" to="/admin/ho-tro-khach-hang">
-                        <div class="parent-icon"><i class="fa-solid fa-phone"></i></div>
+                        <div class="parent-icon"><i class="fa-solid fa-headset"></i></div>
                         <div class="menu-title">Hỗ Trợ Khách Hàng</div>
                     </router-link>
                 </li>

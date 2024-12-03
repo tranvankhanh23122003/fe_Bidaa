@@ -67,7 +67,7 @@ export default {
                         var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
                         this.$toast.success(thong_bao);
                         this.user = {}; 
-                        localStorage.setItem('token_user', res.data.token);
+                        localStorage.setItem('token', res.data.token);
                         localStorage.setItem('ten_user', res.data.user.name);
                         this.$router.push('/user/dat-ban-truc-tuyen');
 

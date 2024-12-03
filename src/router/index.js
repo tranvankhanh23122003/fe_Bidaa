@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import checklogin from "./checklogin";
 
 const routes = [
+    
     {
         path: '/',
         component: () => import('../components/admin/DangNhap.vue')
@@ -10,9 +11,6 @@ const routes = [
         path: '/trang-chu',
         component: () => import('../components/admin/TrangChu.vue')
     },
-
-
-
     {
         path: '/admin/ban-bida',
         component: () => import('../components/admin/banBiDa.vue'),
@@ -77,13 +75,11 @@ const routes = [
     {
         path: '/admin/dang-nhap',
         component: () => import('../components/admin/DangNhap.vue'),
-        beforeEnter: checklogin
 
     },
     {
         path: '/admin/dang-ky',
         component: () => import('../components/User/DangKy.vue'),
-        beforeEnter: checklogin
 
     },
     {
@@ -161,10 +157,17 @@ const routes = [
         component: () => import('../components/User/danhGia.vue'),
         meta: { layout: "client" },
 
+
     },
     {
         path: '/user/ban-nuoc-uong',
         component: () => import('../components/User/banNuocUong.vue'),
+        meta: { layout: "client" },
+
+    },
+    {
+        path: '/user/thanh-toan',
+        component: () => import('../components/User/thanhtoan.vue'),
         meta: { layout: "client" },
 
     },
@@ -176,6 +179,7 @@ const routes = [
     // }, 
 
 ]
+
 
 const router = createRouter({
     history: createWebHistory(),

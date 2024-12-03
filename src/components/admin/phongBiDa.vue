@@ -24,7 +24,7 @@
                                     <td><label class="mx-4 form text-nowrap">Nhập loại phòng:</label></td>
                                     <td>
                                         <select v-model="create_phong.type"  class="form-select" aria-label="Chọn Loại phòng">
-                                            <option selected value="1">Cùi</option>
+                                            <option selected value="1">Thường</option>
                                             <option value="0">Vip</option>
                                         </select>
                                     </td>
@@ -60,16 +60,19 @@
                             <tbody>
                                 <tr>
                                     <td class="text-center align-middle">
-                                        Số phòng
+                                      <b>  Số phòng</b>
                                     </td>
                                     <td class="text-center align-middle">
-                                        Loại phòng
+                                      <b> loại phòng</b>
+                                       
                                     </td>
                                     <td class="text-center align-middle">
-                                        Tình trạng
+                                        <b>  tình trạng</b>
+
                                     </td>
                                     <td class="text-center align-middle">
-                                        Chỉnh sửa
+                                        <b> chỉnh sửa</b>
+
                                     </td>
                                 </tr>
                                 <tr v-for="(value, index) in list_phong">
@@ -77,16 +80,16 @@
                                         {{ value.number }}
                                     </td>
                                     <td class="text-center align-middle">
-                                        Loại phòng
+                                        {{ value.type ? 'Thường' : 'Vip' }}
                                     </td>
                                     <td class="align-middle text-center">
                                         <button v-on:click="changeTrangThai(value)" v-if="value.status == '1'" class="btn btn-success w-100">Mở phòng</button>
                                         <button v-on:click="changeTrangThai(value)" v-else class="btn btn-danger w-100">Đóng phòng</button>
                                     </td>
                                     <td class="text-center align-middle">
-                                        <button class='btn btn-primary mx-2'  data-bs-toggle="modal"
+                                        <button class='btn btn-primary mx-2' @click="edit_phong = Object.assign({}, value)"  data-bs-toggle="modal"
                                         data-bs-target="#suaModal">Sửa</button>
-                                        <button data-bs-toggle="modal"
+                                        <button data-bs-toggle="modal" @click="del_phong = value"
                                         data-bs-target="#xoaModal" class='btn btn-danger'>Xóa</button>
                                        
                                     </td>
@@ -95,26 +98,28 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Nhập kho</h1>
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Cập nhật phòng</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
                                         <label>Số Phòng </label>
-                                        <input type="text" class="form-control">
+                                        <input type="text" class="form-control" v-model="edit_phong.number">
                                         <label>Loại Phòng</label>
-                                        <input type="text" class="form-control">
-                                       
+                                        <select v-model="edit_phong.type"  class="form-select" aria-label="Chọn Loại phòng">
+                                            <option value="1">Thường</option>
+                                            <option value="0">Vip</option>
+                                        </select>
                                         <label>Tình trạng</label>
-                                        <select class="form-select">
+                                        <select v-model="edit_phong.status" class="form-select">
                                             <option value="1">Mở Phòng</option>
-                                            <option value="2">Đóng Phòng</option>
+                                            <option value="0">Đóng Phòng</option>
                                         </select>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
+                                        <button type="button" class="btn btn-secondary close-model"
                                             data-bs-dismiss="modal">Đóng</button>
-                                        <button type="button" class="btn btn-primary">Xác nhận</button>
+                                        <button @click="capnhatPhong" type="button" class="btn btn-primary">Xác nhận</button>
                                     </div>
                                 </div>
                             </div>
@@ -125,7 +130,7 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Xóa Chức Vụ</h1>
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Xóa phòng</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
@@ -138,7 +143,7 @@
                                                 <div class="ms-3">
                                                     <h6 class="mb-0 text-dark">Warning</h6>
                                                     <div class="text-dark">
-                                                        <p>Bạn có muốn xóa danh mục <b></b> này không?
+                                                        <p>Bạn có muốn xóa phòng <b>{{del_phong.number}}</b> này không?
                                                         </p>
                                                         <p>
                                                             <b>Lưu ý:</b> Điều này không thể hoàn tác!
@@ -151,7 +156,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">Thoát</button>
-                                        <button type="button" class="btn btn-danger"
+                                        <button type="button" @click="xoaPhong" class="btn btn-danger"
                                             data-bs-dismiss="modal">Xóa</button>
                                     </div>
                                 </div>
@@ -188,6 +193,8 @@ export default {
             axios
                 .get("phong")
                 .then((res) => {
+                    console.log(12312312);
+                    
                     this.list_phong = res.data.data;
                 })
         },
@@ -197,7 +204,7 @@ export default {
                 .then((res) => {
                     if (res.data.status) {
                         var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
-                        this.$toast.success(thong_bao);
+                        (thong_bao);
                         this.create_phong = {},
                             this.layDataPhong();
                     } else {
@@ -218,11 +225,13 @@ export default {
                         var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
                         this.$toast.error(thong_bao);
                     }
+                }).finally(()=>{
+                    $('.close-model').click()
                 })
         },
         xoaPhong() {
             axios
-                .delete("", this.del_phong)
+                .delete("phong/" + this.del_phong.id)
                 .then((res) => {
                     if (res.data.status) {
                         var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
@@ -246,7 +255,7 @@ export default {
                     } else {
                         var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
                         this.$toast.error(thong_bao);
-                    }
+                    }s
                 })
         },
     },

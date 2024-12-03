@@ -21,22 +21,20 @@
                         <div class="form-body">
                             <div class="row g-3">
                                 <div class="col-sm-12">
-                                    <label class="form-label ">Tài khoản</label>
+                                    <label class="form-label">Tài khoản</label>
                                     <input type="email" v-model="khach_hang_create.userName" class="form-control"
                                         placeholder="Nhập vào tk">
                                 </div>
                                 <div class="col-sm-12">
-                                    <label class="form-label ">Họ Và Tên</label>
-                                    <input type="email" v-model="khach_hang_create.fullName" class="form-control"
+                                    <label class="form-label">Họ Và Tên</label>
+                                    <input type="text" v-model="khach_hang_create.fullName" class="form-control"
                                         placeholder="Nhập vào họ và tên">
                                 </div>
-                               
                                 <div class="col-12">
                                     <label class="form-label">Số Điện Thoại</label>
-                                    <input type="text" v-model="khach_hang_create.phoneNumber"  class="form-control"
+                                    <input type="text" v-model="khach_hang_create.phoneNumber" class="form-control"
                                         placeholder="Nhập vào sdt">
                                 </div>
-                       
                                 <div class="col-12">
                                     <label class="form-label">Mật Khẩu</label>
                                     <div class="input-group">
@@ -47,14 +45,15 @@
                                 <div class="col-12">
                                     <label class="form-label">Nhập Lại Mật Khẩu</label>
                                     <div class="input-group">
-                                        <input v-model="khach_hang_create.password" type="password" 
-                                            class="form-control" placeholder="Nhập lại Mật Khẩu">
+                                        <input v-model="confirmPassword" type="password" class="form-control"
+                                            placeholder="Nhập lại Mật Khẩu">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="d-grid">
-                                        <button type="button" v-on:click="actionDangKy()"  class="btn btn-primary"><i
-                                                class="bx bx-user"></i>Đăng Kí</button>
+                                        <button type="button" v-on:click="actionDangKy()" class="btn btn-primary">
+                                            <i class="bx bx-user"></i>Đăng Kí
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -65,45 +64,53 @@
         </div>
     </div>
 </template>
+
 <script>
-    import axios from 'axios';
-    export default {
-        data() {
-            return {
-                khach_hang_create: {}
-            }
-        },
-        mounted() {
-
-        },
-        methods: {
-            actionDangKy() {
-                axios
-                    .post('http://127.0.0.1:8000/api/dang-ky', this.khach_hang_create)
-                    .then((res) => {
-                        if (res.data.status) {
-                            var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
-                            this.$toast.success(thong_bao);
-                            this.khach_hang_create = {};
-                            this.$router.push('/user/dang-nhap');
-                        } else {
-                            var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
-                            this.$toast.error(thong_bao);
-                            this.$router.push('/user/dang-nhap');
-                        }
-                    })
-                    .catch((errors) => {
-                        const listErrors = errors.response.data.errors;
-                        Object.values(listErrors).forEach((value) => {
-                            var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + value + '<span>';
-                            this.$toast.error(thong_bao);
-                        })
-                    });
+import axios from 'axios';
+export default {
+    data() {
+        return {
+            khach_hang_create: {
+                userName: '',
+                fullName: '',
+                phoneNumber: '',
+                password: '',
             },
+            confirmPassword: ''  // Biến mới cho "Nhập lại Mật Khẩu"
+        }
+    },
+    methods: {
+        actionDangKy() {
+            // Kiểm tra nếu mật khẩu và nhập lại mật khẩu khớp nhau
+            if (this.khach_hang_create.password !== this.confirmPassword) {
+                this.$toast.error('<b>Thông báo</b><span style="margin-top: 5px">Mật khẩu không khớp!</span>');
+                return;
+            }
 
-
+            axios
+                .post('http://127.0.0.1:8000/api/dang-ky', this.khach_hang_create)
+                .then((res) => {
+                    if (res.data.status) {
+                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
+                        this.$toast.success(thong_bao);
+                        this.khach_hang_create = {};
+                        this.confirmPassword = '';  // Đặt lại confirmPassword
+                        this.$router.push('/user/dang-nhap');
+                    } else {
+                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
+                        this.$toast.error(thong_bao);
+                    }
+                })
+                .catch((errors) => {
+                    const listErrors = errors.response.data.errors;
+                    Object.values(listErrors).forEach((value) => {
+                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + value + '<span>';
+                        this.$toast.error(thong_bao);
+                    })
+                });
         },
-    }
-
+    },
+}
 </script>
+
 <style></style>
