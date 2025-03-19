@@ -3,12 +3,8 @@
     <h1 class="text-center">Quản lý Hóa Đơn</h1>
 
     <div class="search-form my-4">
-      <input
-        type="text"
-        v-model="searchQuery"
-        class="form-control"
-        placeholder="Tìm kiếm hóa đơn theo tên hoặc số điện thoại..."
-      />
+      <input type="text" v-model="searchQuery" class="form-control"
+        placeholder="Tìm kiếm hóa đơn theo tên hoặc số điện thoại..." />
       <button class="btn btn-primary mt-2" @click="timKiemHoaDon">Tìm kiếm</button>
     </div>
 
@@ -17,27 +13,12 @@
         <div class="bill-form my-4">
           <h2 class="text-center">{{ editing ? 'Cập nhật hóa đơn' : 'Tạo hóa đơn mới' }}</h2>
 
-          <input
-            type="text"
-            v-model="billForm.customerName"
-            class="form-control"
-            placeholder="Nhập tên khách hàng"
-            required
-          />
-          <input
-            type="text"
-            v-model="billForm.customerPhone"
-            class="form-control mt-2"
-            placeholder="Số điện thoại"
-            required
-          />
-          <input
-            type="number"
-            v-model="billForm.totalAmount"
-            class="form-control mt-2"
-            placeholder="Tổng tiền (VND)"
-            required
-          />
+          <input type="text" v-model="billForm.customerName" class="form-control" placeholder="Nhập tên khách hàng"
+            required />
+          <input type="text" v-model="billForm.customerPhone" class="form-control mt-2" placeholder="Số điện thoại"
+            required />
+          <input type="number" v-model="billForm.totalAmount" class="form-control mt-2" placeholder="Tổng tiền (VND)"
+            required />
 
           <button class="btn btn-success mt-3" @click="editing ? capNhatHoaDon() : taoHoaDon()">
             {{ editing ? 'Cập nhật' : 'Tạo hóa đơn' }}
@@ -53,15 +34,12 @@
           <div class="card-body">
             <h2 class="text-center">Danh sách Hóa Đơn</h2>
             <ul class="list-group">
-              <li
-                class="list-group-item d-flex justify-content-between align-items-center"
-                v-for="bill in bills"
-                :key="bill.id"
-              >
+              <li class="list-group-item d-flex justify-content-between align-items-center" v-for="bill in bills"
+                :key="bill.id">
                 <div>
-                  <p><b>Khách hàng:</b> {{ bill.fullName }}</p>
-                  <p><b>Số điện thoại:</b> {{ bill.phoneNumber }}</p>
-                  <p><b>Tổng tiền:</b> {{ bill.amount }} VND</p>
+                  <p><b>Khách hàng:</b> {{ bill.customerName }}</p>
+                  <p><b>Số điện thoại:</b> {{ bill.customerPhone }}</p>
+                  <p><b>Tổng tiền:</b> {{ bill.totalAmount }} VND</p>
                 </div>
                 <div>
                   <button class="btn btn-warning mx-2" @click="batDauChinhSua(bill)">
@@ -86,26 +64,24 @@ import axios from '../../assets/core/BaseRequest'
 export default {
   data() {
     return {
-      bills: [], 
-      billForm: { 
+      bills: [],
+      billForm: {
         customerName: '',
         customerPhone: '',
-        totalAmount: ''
-      }, 
+        totalAmount: '',
+      },
       searchQuery: "",
-      editing: false, 
-      editingId: null, 
+      editing: false,
+      editingId: null,
     };
   },
   mounted() {
-    this.layHoaDon(); 
+    this.layHoaDon();
   },
   methods: {
     layHoaDon() {
       axios.get("hoa-don")
         .then((response) => {
-          console.log(response.data.data);
-          
           this.bills = response.data.data;
         })
         .catch((error) => {
@@ -118,13 +94,19 @@ export default {
         alert("Vui lòng điền đầy đủ thông tin.");
         return;
       }
+      const data = {
+        ...this.billForm,
+      };
 
-      axios.post("hoa-don", this.billForm)
+      console.log('oke', data);
+      
+
+      axios.post("hoa-don", data)
         .then((response) => {
           if (response.data.status === 201) {
             alert(response.data.message);
             this.resetForm();
-            this.layHoaDon(); 
+            this.layHoaDon();
           }
         })
         .catch((error) => {
@@ -133,7 +115,7 @@ export default {
     },
 
     batDauChinhSua(bill) {
-      this.billForm = { ...bill }; 
+      this.billForm = { ...bill };
       this.editing = true;
       this.editingId = bill.id;
     },
@@ -145,7 +127,7 @@ export default {
             alert(response.data.message);
             this.resetForm();
             this.editing = false;
-            this.layHoaDon(); 
+            this.layHoaDon();
           }
         })
         .catch((error) => {
@@ -159,7 +141,7 @@ export default {
           .then((response) => {
             if (response.data.status === 200) {
               alert(response.data.message);
-              this.layHoaDon(); 
+              this.layHoaDon();
             }
           })
           .catch((error) => {
@@ -179,7 +161,7 @@ export default {
     },
 
     huyChinhSua() {
-      this.resetForm(); 
+      this.resetForm();
       this.editing = false;
     },
 

@@ -27,6 +27,12 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td><label class="mx-4 form">Nhập ảnh bàn (link) :</label></td>
+                                    <td>
+                                        <input v-model="create_ban.image" type="text" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td><label class="mx-4 form">Nhập loại phòng :</label></td>
                                     <td>
                                         <select v-model="create_ban.type" class="form-select"
@@ -44,8 +50,8 @@
                                     <td>
                                         <select v-model="create_ban.status" class="form-select"
                                             aria-label="Chọn trạng thái">
-                                            <option selected value="1">Đang sử dụng</option>
-                                            <option value="0">Bàn Trống</option>
+                                            <option selected value="0">Đang sử dụng</option>
+                                            <option value="1">Bàn Trống</option>
                                         </select>
                                     </td>
                                 </tr>
@@ -66,19 +72,20 @@
                     </div>
                     <div class="card-body">
                         <table class="table table-bordered">
-                            
+
                             <tbody>
                                 <tr>
                                     <td class="text-center align-middle">
-<b>Số bàn</b>                                    </td>
+                                        <b>Số bàn</b>
+                                    </td>
+                                    <td class="text-center align-middle">
+                                        <b>Loại phòng</b>
+                                    </td>
                                     <td class="text-center align-middle">
                                         <b>Loại bàn</b>
                                     </td>
                                     <td class="text-center align-middle">
-                                       <b>Loại Phòng</b>
-                                    </td>
-                                    <td class="text-center align-middle">
-                                       <b>tình trạng </b>
+                                        <b>tình trạng </b>
                                     </td>
                                     <td class="text-center align-middle">
                                         <b> chỉnh sửa</b>
@@ -132,7 +139,7 @@
                                         <label>Loại phòng</label>
                                         <select v-model="edit_ban.type" class="form-select"
                                             aria-label="Chọn Loại phòng">
-                                            <option value="1">Cùi</option>
+                                            <option value="1">Thường</option>
                                             <option value="0">Vip</option>
                                         </select>
 
@@ -145,7 +152,8 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">Đóng</button>
-                                        <button  @click="capnhatban" type="button" class="btn btn-primary">Xác nhận</button>
+                                        <button @click="capnhatban" type="button" class="btn btn-primary">Xác
+                                            nhận</button>
                                     </div>
                                 </div>
                             </div>
@@ -168,7 +176,8 @@
                                                 <div class="ms-3">
                                                     <h6 class="mb-0 text-dark">Warning</h6>
                                                     <div class="text-dark">
-                                                        <p>Bạn có muốn xóa danh mục <b>{{ del_ban.number }}</b> này không?
+                                                        <p>Bạn có muốn xóa danh mục <b>{{ del_ban.number }}</b> này
+                                                            không?
                                                         </p>
                                                         <p>
                                                             <b>Lưu ý:</b> Điều này không thể hoàn tác!

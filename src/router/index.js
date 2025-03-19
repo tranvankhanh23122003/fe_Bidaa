@@ -100,7 +100,13 @@ const routes = [
         beforeEnter: checklogin
 
     },
-    // User
+    {
+        path: '/admin/chat-khach-hang',
+        component: () => import('../components/admin/AdminChat.vue'),
+        beforeEnter: checklogin
+
+    },
+    // Userrrrrrrrrrrrrrrrrrrrrrrrrrr
     {
         path: '/user/dang-nhap',
         component: () => import('../components/User/DangNhap.vue'),
@@ -116,7 +122,6 @@ const routes = [
 
         meta: { layout: "client" },
 
-
     },
 
 
@@ -125,6 +130,8 @@ const routes = [
         component: () => import('../components/User/datbanTrucTuyen.vue'),
 
         meta: { layout: "client" },
+
+
 
 
     },
@@ -138,6 +145,8 @@ const routes = [
         path: '/user/he-thong-tich-diem',
         component: () => import('../components/User/heThongTichDiem.vue'),
         meta: { layout: "client" },
+
+
 
     },
     {
@@ -171,6 +180,8 @@ const routes = [
         meta: { layout: "client" },
 
     },
+   
+  
 
     // {
     //     path : '/user',

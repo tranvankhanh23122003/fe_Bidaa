@@ -117,7 +117,7 @@
                     href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="https://bizweb.dktcdn.net/100/418/981/products/z4844324734873-a402995347fddf76e21b8dc763f4a6e1-1699018261248.jpg?v=1699018265900" class="user-img" alt="user avatar">
                     <div class="user-info ps-3">
-                        <p class="user-name mb-0">Huynh Hieu</p>
+                        <p class="user-name mb-0">Trần Văn Khánh</p>
                         <p class="designattion mb-0">Web Designer</p>
                     </div>
                 </a>

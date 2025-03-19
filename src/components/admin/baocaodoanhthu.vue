@@ -50,8 +50,8 @@ data() {
       { ngay: '2024-09-05', giaoDich: 40, doanhThu: 1000000 },
     ],
     boLoc: {
-      tuNgay: '',
-      denNgay: '',
+      tuNgay: '2024-09-01', // năm , tháng , ngày
+      denNgay: '2024-09-05',// năm , tháng , ngày
     },
     doanhThuDaLoc: [],
   };

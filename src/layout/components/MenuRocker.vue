@@ -115,6 +115,13 @@
                         <div class="menu-title">Hỗ Trợ Khách Hàng</div>
                     </router-link>
                 </li>
+                <li class="nav-item">
+                    <router-link class="nav-link" to="/admin/chat-khach-hang">
+                        <div class="parent-icon"><i class="fa-solid fa-headset"></i></div>
+                        <div class="menu-title">Chat vs khách hàng</div>
+                    </router-link>
+                </li>
+             
             </ul>
         </nav>
     </div>

@@ -7,7 +7,7 @@
           <h3 class="mb-3">{{ isEditing ? 'Chỉnh Sửa Đánh Giá' : 'Để lại đánh giá của bạn' }}</h3>
           <form @submit.prevent="isEditing ? capNhatDanhGia() : guiDanhGia()">
             <div class="mb-3">
-              <input v-model="tenNguoiDung" class="form-control" placeholder="Nhập tên của bạn" required />
+              <input v-model="tenNguoiDung" class="form-control" placeholder="Nhập ID người dùng" required />
             </div>
             <div class="mb-3">
               <textarea v-model="noiDungDanhGia" class="form-control" placeholder="Nhập nội dung đánh giá của bạn" required></textarea>

@@ -42,7 +42,8 @@
           </div>
         </div>
   
-        <div class="col-4">
+        <transition name="design">
+          <div class="col-4"  v-if="isorderdesign">
           <div class="order-summary card">
             <div class="card-header">
               <h3 class="mb-0">Đặt Hàng Của Bạn</h3>
@@ -59,11 +60,13 @@
                   </li>
                 </ul>
                 <p><strong>Tổng cộng:</strong> {{ totalPrice }} VNĐ</p>
-                <button class="btn btn-success" v-on:click="xacNhanDatHang">Xác Nhận Đặt Hàng</button>
+                <button class="btn btn-success" v-on:click="xacNhanDatHang()">Xác Nhận Đặt Hàng</button>
               </div>
             </div>
           </div>
         </div>
+        </transition>
+     
       </div>
     </div>
   </template>
@@ -85,7 +88,8 @@
           { ten: 'Bia', mota: 'Bia lạnh', gia: 30000, hinh: 'https://biathanhhoa.com.vn/wp-content/uploads/2021/07/Silver-dung.jpg' },
           
         ],
-        orderItems: []
+        orderItems: [],
+        isorderdesign : false,
       };
     },
     computed: {
@@ -94,8 +98,12 @@
       }
     },
     methods: {
+      orderdesign(){
+        this.orderdesign =!this.orderdesign;
+      },
       datHang(monAn) {
         this.orderItems.push(monAn);
+        this.isorderdesign=true;
       },
       xoaMon(monAn) {
         this.orderItems = this.orderItems.filter(item => item !== monAn);
@@ -103,6 +111,8 @@
       xacNhanDatHang() {
         alert(`Đặt hàng thành công với tổng giá: ${this.totalPrice} VNĐ`);
         this.orderItems = []; 
+        this.isorderdesign=false;
+
       }
     }
   };
@@ -114,8 +124,17 @@
   }
   
   .order-summary {
-    position: sticky;
-    top: 20px;
+    position: fixed;
+    right: 100px;
+    width: 400px;
+    top:150px;
   }
+  .design-enter-active , .design-leave-active{
+transition: opacity 0.5s, transform 0.5s ;
+  }
+  .design-enter-to , .design-leave-to{
+    opacity: 0;
+  }
+  
   </style>
   
